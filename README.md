@@ -147,3 +147,25 @@ kubectl apply -f nginx-service.yaml
 ```
 
 
+### Result file (to see Status) [OPTIONAL]
+
+```bash
+kubectl get deployment nginx-deployment -o yaml > nginx-deployment-result.yaml
+```
+
+
+
+## Deleting Deployment and Service with the configuration file [OPTIONAL]
+
+```bash
+kubectl delete -f nginx-deployment.yaml
+kubectl delete -f nginx-service.yaml
+```
+
+
+
+## Thanks to
+
+Thanks to [TechWorld with Nana](https://www.youtube.com/@techworldwithnana) for the Kubernetes tutorial this project is based on.
+Check out her channel and her [website](https://www.techworld-with-nana.com/) for more DevOps and cloud content.
+The reference video is ["Kubernetes tutorial for Beginners"](https://www.youtube.com/watch?v=X48VuDVv0do).
