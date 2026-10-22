@@ -1,4 +1,4 @@
-# Kubernetes Tutorial
+# Kubernetes Basics
 
 Kubernetes is a tool that allows you to create and manage an environment with a lot of containers.
 
@@ -6,8 +6,16 @@ Kubernetes is a tool that allows you to create and manage an environment with a 
 
 ## Prerequisites
 
- - [ Homebrew ] = Package Manager
- - [ Docker Desktop ] = Containerization software (and local environment for Kubernetes)
+  - [ Homebrew ] = Package Manager
+  - [ minikube ] = local Kubernetes 
+```bash
+brew install minikube
+```
+  - [ kubectl ] = CLI di Kubernetes
+```bash
+# included in Docker Desktop, otherwise `brew install kubectl`.
+```
+  - [ Docker Desktop ] = Containerization software (driver used by minikube)
 
 NOTE: Docker Desktop must run to work with it!
 
@@ -45,7 +53,7 @@ The ReplicaSet name is formed as " <deployment_name>-<replicaset_id> ".
 The Pod name is formed as " <deployment_name>-<replicaset_id>-<pod_id> ".
 
 
-### Deleting the Pods
+### Deleting the Deployments (and their Pods)
 
 ```bash
 kubectl delete deployment nginx-depl
@@ -64,10 +72,10 @@ touch nginx-deployment.yaml
 vim nginx-deployment.yaml
 ```
 
-Now you have created and opened a file YAML (Destination) for the configuration.
-Inside it, you have to write the following rows:
+Now you have created and opened a file YAML (Deployment) for the configuration.
+Inside it, you have to write the following lines:
 
-```bash
+```yaml
 apiVersion: apps/v1
 # Type of configuration file
 kind: Deployment
@@ -96,11 +104,11 @@ spec:
         - containerPort: 8080
 
 # 3. Status
-# Automatically generated and added by Kubernetes!
+# Not written by you: Kubernetes generates it in the live object (see "Result file").
 ```
 
 NOTE: This is the procedure on MacOS, using the VIM Editor.
-Now you have a base configuration file (Deployment) to create the nginx Pod.
+Now you have a base configuration file (Deployment) to create the nginx Pods (2 replicas).
 
 ```bash
 kubectl apply -f nginx-deployment.yaml
@@ -115,9 +123,9 @@ vim nginx-service.yaml
 ```
 
 Now you have created and opened a file YAML (Service) for the configuration.
-Inside it, you have to write the following rows:
+Inside it, you have to write the following lines:
 
-```bash
+```yaml
 apiVersion: v1
 # Type of configuration file
 kind: Service
@@ -136,18 +144,38 @@ spec:
       targetPort: 8080
 
 # 3. Status
-# Automatically generated and added by Kubernetes!
+# Not written by you: Kubernetes generates it in the live object (see "Result file").
 ```
 
 NOTE: This is the procedure on MacOS, using the VIM Editor.
-Now you have a base configuration file (Service) to create the nginx Pod.
+Now you have a base configuration file (Service) to expose the nginx Pods inside the cluster.
 
 ```bash
 kubectl apply -f nginx-service.yaml
+kubectl get deployment,service,pod
+kubectl describe service nginx-service
 ```
 
 
-### Result file (to see Status) [OPTIONAL]
+
+### Testing the Service
+
+The Service is of type `ClusterIP`, so it is reachable only inside the cluster.
+To test it from your machine, create a temporary tunnel:
+```bash
+kubectl port-forward service/nginx-service 8081:80
+```
+NOTE: "8081:80" means "<local_port>:<Service_port>". The command keeps running in the foreground (stop it with Ctrl+C).
+
+In another terminal:
+```bash
+curl localhost:8081
+```
+You should see the HTML of the "Welcome to nginx!" page.
+
+
+
+### Result file (to see Status)
 
 ```bash
 kubectl get deployment nginx-deployment -o yaml > nginx-deployment-result.yaml
@@ -155,7 +183,7 @@ kubectl get deployment nginx-deployment -o yaml > nginx-deployment-result.yaml
 
 
 
-## Deleting Deployment and Service with the configuration file [OPTIONAL]
+## Deleting Deployment and Service with the configuration file
 
 ```bash
 kubectl delete -f nginx-deployment.yaml

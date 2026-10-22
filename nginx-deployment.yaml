@@ -23,7 +23,7 @@ spec:
       - name: nginx
         image: nginx
         ports:
-        - containerPort: 8080
+        - containerPort: 80
 
 # 3. Status
-# Automatically generated and added by Kubernetes!
+# Not written by you: Kubernetes generates it in the live object (see "Result file").
