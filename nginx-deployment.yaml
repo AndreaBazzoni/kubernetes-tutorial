@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+# Type of configuration file
+kind: Deployment
+
+# 1. Metadata
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+
+# 2. Specification
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 8080
+
+# 3. Status
+# Automatically generated and added by Kubernetes!

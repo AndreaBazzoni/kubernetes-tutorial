@@ -1,0 +1,19 @@
+apiVersion: v1
+# Type of configuration file
+kind: Service
+
+# 1. Metadata
+metadata:
+  name: nginx-service
+
+# 2. Specification
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+
+# 3. Status
+# Automatically generated and added by Kubernetes!
