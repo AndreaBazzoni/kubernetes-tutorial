@@ -1,0 +1,11 @@
+apiVersion: v1
+# Type of configuration file
+kind: ConfigMap
+
+# 1. Metadata
+metadata:
+  name: mongodb-configmap
+
+# 2. Data
+data:
+  database_url: mongodb-service
